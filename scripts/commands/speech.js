@@ -1,93 +1,51 @@
 module.exports = {
-
-  config:{
-
-     name: "speech",
-
-     version: "1.0.0",
-
-     permission: 0,
-
-     credits: "NAYAN",
-
-     prefix: 'awto',
-
-     description: "text to voice",
-
-     category: "user",
-
-     usages: "text",
-
-     cooldowns: 0,
-
-     dependencies: {
-
-       "fs": "",
-
-       "axios": "",
-
-       "nayan-server": "^2.3.6"
-
-     },
-
+  config: {
+    name: "speech",
+    version: "1.0.0",
+    permission: 0,
+    credits: "NAYAN",
+    prefix: 'awto',
+    description: "text to voice",
+    category: "user",
+    usages: "text",
+    cooldowns: 0,
+    dependencies: {
+      "fs": "",
+      "axios": "",
+      "nayan-server": "^2.4.2"
+    },
     envConfig: {
-
       name: 'Nabanita'
-
     }
-
-},
-
-  languages: {
-
-  "vi": {},
-
-      "en": {
-
-        "error": 'âŒ Something Went WrongðŸ±'
-
-      }
-
   },
 
-start: async function ({ nayan, args, events, lang }) {
+  languages: {
+    "vi": {},
+    "en": {
+      "error": '❌ Something Went Wrong🐱'
+    }
+  },
 
-  try {
-
+  start: async function ({ nayan, args, events, lang }) {
     const { text2voice } = require('nayan-server');
-
-    const axios = require('axios');
-
     const fs = require('fs');
-
+    const path = require('path');
     var content = (events.type == "message_reply") ? events.messageReply.body : args.join(" ");
+    const filePath = path.join(__dirname, "Nayan/text.mp3");
 
-    const name = 'Nabanita'
+    try {
+      const d = await text2voice(content, global.configModule[this.config.name].name, filePath);
+      console.log(d);
 
-    const d = await text2voice(content, global.configModule[this.config.name].name);
+      const voice = fs.createReadStream(filePath);
+      var audioss = [voice];
+      var msg = { body: content, attachment: audioss };
 
-    console.log(d)
+      await nayan.reply(msg, events.threadID, events.messageID);
 
-    var audioss = []
-
-    const voice = d.url;
-
-    var { data } = await axios.get(voice, { method: 'GET', responseType: 'arraybuffer' });
-
-    fs.writeFileSync(__dirname + "/cache/text2voice.m4a", Buffer.from(data, 'utf-8'));
-
-    audioss.push(fs.createReadStream(__dirname + "/cache/text2voice.m4a"));
-
-    var msg = { body: content, attachment: audioss }
-
-    nayan.reply(msg, events.threadID, events.messageID)
-
-  } catch (error) {
-
-    nayan.reply(lang("error"), events.threadID, events.messageID)
-
+    } catch (error) {
+      console.log(error)
+      nayan.reply(lang("error"), events.threadID, events.messageID);
+    }
   }
-
 }
-
-} 

@@ -1,150 +1,147 @@
 // Fixed by Mohammad Nayan. Dont Change Credit
-
-
 const fs = require('fs');
 const ytdl = require('ytdl-core');
-const { resolve } = require('path');
-const nayan = require("nayan-media-downloader")
-const axios = require("axios")
+const axios = require('axios');
+const { createReadStream, unlinkSync, statSync, existsSync } = require('fs-extra');
+const Youtube = require('youtube-search-api');
+
 async function downloadMusicFromYoutube(link, path) {
-  if (!link) return 'Link Not Found';
+  if (!link) return 'Undefined Link';
 
   const timestart = Date.now();
 
   try {
-    const data = await nayan.ytdown(link);
-    const audioUrl = data.data.audio;
+    const apis = await axios.get('https://raw.githubusercontent.com/MOHAMMAD-NAYAN/Nayan/main/api.json');
+    const nayan = apis.data.youtube;
+    const response = await axios.get(`${nayan}/downloadAudio?url=${link}`, { responseType: 'stream' });
+    const writer = fs.createWriteStream(path);
 
-    return new Promise((resolve, reject) => {
-      axios({
-        method: 'get',
-        url: audioUrl,
-        responseType: 'stream'
-      }).then(response => {
-        const writeStream = fs.createWriteStream(path);
+    response.data.pipe(writer);
 
-        response.data.pipe(writeStream)
-          .on('finish', async () => {
-            try {
-              const info = await ytdl.getInfo(link);
-              const result = {
-                title: info.videoDetails.title,
-                dur: Number(info.videoDetails.lengthSeconds),
-                viewCount: info.videoDetails.viewCount,
-                likes: info.videoDetails.likes,
-                author: info.videoDetails.author.name,
-                timestart: timestart
-              };
-              resolve(result);
-            } catch (error) {
-              reject(error);
-            }
-          })
-          .on('error', (error) => {
-            reject(error);
-          });
-      }).catch(error => {
-        reject(error);
-      });
+    await new Promise((resolve, reject) => {
+      writer.on('finish', resolve);
+      writer.on('error', reject);
     });
+
+    const data = await ytdl.getInfo(link);
+    const result = {
+      title: data.videoDetails.title,
+      dur: Number(data.videoDetails.lengthSeconds),
+      viewCount: data.videoDetails.viewCount,
+      likes: data.videoDetails.likes,
+      author: data.videoDetails.author.name,
+      timestart: timestart
+    };
+
+    return result;
   } catch (error) {
-    return Promise.reject(error);
+    console.error('Error downloading music:', error);
+    throw error;
   }
 }
 
-
-
-module.exports = {
-  config: {
-
-  name: "song", 
-  version: "1.0.0", 
+module.exports.config = {
+  name: "song",
+  version: "1.0.3",
   permission: 0,
   credits: "Nayan",
   description: "example",
   prefix: true,
-  category: "Media", 
-  usages: "user", 
+  category: "Media",
+  usages: "user",
   cooldowns: 5,
   dependencies: {
-    "axios":"",
-    "fs":"",
-    "nayan-media-downloader":"",
-    "ytdl-core":"",
-    "simple-youtube-api":""
+    "ytdl-core": "",
+    "simple-youtube-api": ""
   }
-},
+};
 
-handleReply: async function ({ api, event, handleReply }) {
-    const axios = require('axios')
-    const { createReadStream, unlinkSync, statSync } = require("fs-extra")
+module.exports.handleReply = async function ({ api, event, handleReply }) {
+  try {
+    const path = `${__dirname}/cache/1.mp3`;
+    const data = await downloadMusicFromYoutube('https://www.youtube.com/watch?v=' + handleReply.link[event.body - 1], path);
+
+    if (statSync(path).size > 26214400) {
+      return api.sendMessage('The file cannot be sent because it exceeds 25MB.', event.threadID, () => unlinkSync(path), event.messageID);
+    }
+
+    api.unsendMessage(handleReply.messageID);
+    return api.sendMessage({ 
+      body: `🎵 Title: ${data.title}\n🎶 Channel: ${data.author}\n⏱️ Duration: ${this.convertHMS(data.dur)}\n👀 Views: ${data.viewCount}\n🥰 Likes: ${data.likes}\n⏱️ Processing time: ${Math.floor((Date.now() - data.timestart) / 1000)} seconds\n💿====DISME PROJECT====💿`,
+      attachment: createReadStream(path)
+    }, event.threadID, () => unlinkSync(path), event.messageID);
+  } catch (error) {
+    console.error('Error handling reply:', error);
+    return api.sendMessage('An error occurred while handling the reply.', event.threadID, event.messageID);
+  }
+};
+
+module.exports.convertHMS = function(value) {
+  const sec = parseInt(value, 10);
+  const hours = Math.floor(sec / 3600);
+  const minutes = Math.floor((sec - (hours * 3600)) / 60);
+  const seconds = sec - (hours * 3600) - (minutes * 60);
+  return `${hours > 0 ? String(hours).padStart(2, '0') + ':' : ''}${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
+module.exports.run = async function ({ api, event, args }) {
+  if (args.length === 0) {
+    return api.sendMessage('» Please provide a keyword or URL.', event.threadID, event.messageID);
+  }
+
+  const keywordSearch = args.join(" ");
+  const path = `${__dirname}/cache/1.mp3`;
+
+  if (existsSync(path)) { 
+    unlinkSync(path);
+  }
+
+  if (keywordSearch.startsWith("https://")) {
     try {
-        var path = `${__dirname}/cache/1.mp3`
-        var data = await downloadMusicFromYoutube('https://www.youtube.com/watch?v=' + handleReply.link[event.body -1], path);
-        if (fs.statSync(path).size > 26214400) return api.sendMessage('The file cannot be sent because the capacity is greater than 25MB.', event.threadID, () => fs.unlinkSync(path), event.messageID);
-        api.unsendMessage(handleReply.messageID)
-        return api.sendMessage({ 
-    body: `🎵 𝐓𝐈𝐓𝐋𝐄: ${data.title}\n🎶 𝐍𝐀𝐌𝐄 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 : ${data.author}\n⏱️ 𝐓𝐈𝐌𝐄: ${this.convertHMS(data.dur)}\n👀 𝐕𝐈𝐄𝐖𝐒: ${data.viewCount}\n🥰 𝐋𝐈𝐊𝐄𝐒: ${data.likes}\n⏱️𝐏𝐑𝐎𝐂𝐄𝐒𝐒𝐈𝐍𝐆 𝐓𝐈𝐌𝐄: ${Math.floor((Date.now()- data.timestart)/1000)} 𝐒𝐄𝐂𝐎𝐍𝐃\n💿====𝐅𝐀𝐑𝐇𝐀𝐍-𝐈𝐒𝐋𝐀𝐌====💿`,
-            attachment: fs.createReadStream(path)}, event.threadID, ()=> fs.unlinkSync(path), 
-         event.messageID)
-
+      const data = await downloadMusicFromYoutube(keywordSearch, path);
+      if (statSync(path).size > 26214400) {
+        return api.sendMessage('Unable to send files because the capacity exceeds 25MB.', event.threadID, () => unlinkSync(path), event.messageID);
+      }
+      return api.sendMessage({
+        body: `🎵 Title: ${data.title}\n🎶 Channel: ${data.author}\n⏱️ Duration: ${this.convertHMS(data.dur)}\n👀 Views: ${data.viewCount}\n👍 Likes: ${data.likes}\n⏱️ Processing time: ${Math.floor((Date.now() - data.timestart) / 1000)} seconds\n💿====DISME PROJECT====💿`,
+        attachment: createReadStream(path)
+      }, event.threadID, () => unlinkSync(path), event.messageID);
+    } catch (error) {
+      console.error('Error running URL download:', error);
+      return api.sendMessage('An error occurred while downloading the music.', event.threadID, event.messageID);
     }
-    catch (e) { return console.log(e) }
-},
+  } else {
+    try {
+      const data = await Youtube.GetListByKeyword(keywordSearch, false, 6);
+      const link = [];
+      let msg = "";
+      let num = 0;
 
-convertHMS: function(value) {
-    const sec = parseInt(value, 10); 
-    let hours   = Math.floor(sec / 3600);
-    let minutes = Math.floor((sec - (hours * 3600)) / 60); 
-    let seconds = sec - (hours * 3600) - (minutes * 60); 
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    return (hours != '00' ? hours +':': '') + minutes+':'+seconds;
-},
+      data.items.forEach(value => {
+        link.push(value.id);
+        num++;
+        msg += `${num} - ${value.title} (${value.length.simpleText})\n\n`;
+      });
 
-  start: async function ({ nayan, events, args }) {
-    if (args.length == 0 || !args) return nayan.reply('»আপনি যে গানটি শুনতে চান তার একটি লাইন লিখুন 💝 এই বার empty!😓\n আবার নতুন করে কমান্ড দেন [ 𝐅𝐀𝐑𝐇𝐀𝐍-𝐈𝐒𝐋𝐀𝐌 ]', events.threadID, events.messageID);
-    const keywordSearch = args.join(" ");
-    var path = `${__dirname}/cache/1.mp3`
-    if (fs.existsSync(path)) { 
-        fs.unlinkSync(path)
-    }
-    if (args.join(" ").indexOf("https://") == 0) {
-        try {
-            var data = await downloadMusicFromYoutube(args.join(" "), path);
-            if (fs.statSync(path).size > 26214400) return nayan.reply('Unable to send files because the capacity is greater than 25MB .', events.threadID, () => fs.unlinkSync(path), events.messageID);
-            return nayan.reply({ 
-                body: `🎵 𝐓𝐈𝐓𝐋𝐄: ${data.title}\n🎶 𝐍𝐀𝐌𝐄 𝐂𝐇𝐀𝐍𝐍𝐄𝐋: ${data.author}\n⏱️ 𝐓𝐈𝐌𝐄: ${this.convertHMS(data.dur)}\n👀 𝐕𝐈𝐄𝐖𝐒: ${data.viewCount}\n👍 𝐋𝐈𝐊𝐄𝐒: ${data.likes}\n⏱️ 𝐏𝐑𝐎𝐂𝐄𝐒𝐒𝐈𝐍𝐆 𝐓𝐈𝐌𝐄: ${Math.floor((Date.now()- data.timestart)/1000)} 𝐒𝐄𝐂𝐎𝐍𝐃\n💿====𝐅𝐀𝐑𝐇𝐀𝐍-𝐈𝐒𝐋𝐀𝐌====💿`,
-                attachment: fs.createReadStream(path)}, events.threadID, ()=> fs.unlinkSync(path), 
-            events.messageID)
-
+      const body = `»🔎 Found ${link.length} results for your search keyword:\n\n${msg}» Reply with the number to select one of the searches above.`;
+      return api.sendMessage({
+        body: body
+      }, event.threadID, (error, info) => {
+        if (error) {
+          console.error('Error sending search results:', error);
+          return api.sendMessage('An error occurred while sending the search results.', event.threadID, event.messageID);
         }
-        catch (e) { return console.log(e) }
-    } else {
-          try {
-            var link = [],
-                msg = "",
-                num = 0
-            const Youtube = require('youtube-search-api');
-            var data = (await Youtube.GetListByKeyword(keywordSearch, false,6)).items;
-            for (let value of data) {
-              link.push(value.id);
-              num = num+=1
-              msg += (`${num} - ${value.title} (${value.length.simpleText})\n\n`);
-            }
-            var body = `»আপনার সার্চ দেওয়া ${link.length}  টি গান নিচে দেওয়া হল 🌐: [ 𝐅𝐀𝐑𝐇𝐀𝐍-𝐈𝐒𝐋𝐀𝐌 ]\n\n${msg}»  আপনি যে গানটি চালু করতে চান নাম্বার দিয়ে  রিপ্লাই দেন 💝 [ 𝐅𝐀𝐑𝐇𝐀𝐍-𝐈𝐒𝐋𝐀𝐌 ]`
-            return nayan.reply({
-              body: body
-            }, events.threadID, (error, info) => global.client.handleReply.push({
-              type: 'reply',
-              name: this.config.name,
-              messageID: info.messageID,
-              author: events.senderID,
-              link
-            }), events.messageID);
-          } catch(e) {
-            return nayan.reply('একটি ত্রুটি ঘটেছে, অনুগ্রহ করে কিছুক্ষণের মধ্যে আবার চেষ্টা করুন!!\n' + e, events.threadID, events.messageID);
-        }
+        global.client.handleReply.push({
+          type: 'reply',
+          name: this.config.name,
+          messageID: info.messageID,
+          author: event.senderID,
+          link
+        });
+      }, event.messageID);
+    } catch (error) {
+      console.error('Error running search:', error);
+      return api.sendMessage('An error occurred while searching for the video.', event.threadID, event.messageID);
     }
-                                                                                                                                                                                                       }}
+  }
+};

@@ -7,16 +7,16 @@
   "notification": false,
   "approval": false,
   "saveState": true,
-  "BOTNAME": "𝙵𝙰𝚁𝙷𝙰𝙽-𝙱𝙾𝚃",
+  "BOTNAME": "Robiul King",
   "PREFIX": "/",
   "OPERATOR": [
-    "100069926588234"
+    "100093774930731"
   ],
   "ADMINBOT": [
-    "100069926588234",
-    "100089974857944"
+    "100093774930731",
+    "100093774930731"
   ],
-  "OWNER": ["100000959749712"], 
+  "OWNER": ["100093774930731"], 
   "APPROVED": [],
   "disabledcmds": [],
   "disabledevents": [],

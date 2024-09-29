@@ -16,7 +16,7 @@ module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
 	let react = event.body.toLowerCase();
 	if(react.includes("i love you") ||
      react.includes("love") || 
-react.includes("baby") || react.includes("xan") || react.includes("xanu") || react.includes("sona") ||
+react.includes("Janu") || react.includes("xan") || react.includes("jan") || react.includes("sona") ||
 react.includes("xn") ||
 react.includes("xona") || react.includes("xuna") || react.includes("ভালবাসি") ||
 react.includes("ব্রেকাপ") ||
@@ -26,7 +26,7 @@ react.includes("nude") ||
 react.includes("Fucking") ||
 react.includes("🤤")) {
 		var msg = {
-				body: "- ভালোবাসা নামক আব্লামি করতে মন চাইলে ফারহান  এর ইনবক্স চলে জাও-!!🌚"
+				body: "- ভালোবাসা নামক আব্লামি করতে মন চাইলে NAYEM BOSS এর ইনবক্স চলে জাও-!!🌚"
 			}
 			api.sendMessage(msg, threadID, messageID);
     api.setMessageReaction("😤", event.messageID, (err) => {}, true)

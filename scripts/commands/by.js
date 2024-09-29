@@ -21,7 +21,7 @@ module.exports = {
     if (["by","bye","By","Bye","good bye","Allah hafiz","allah hafiz",].some(keyword => lowerCaseBody.startsWith(keyword))) {
       const msg = {
         body: "আবার কথা হবে 🥰.\n\n~ যেকোনো তথ্যের জন্য আমার id তে নক করতে পারেন 👇\nhttps://www.facebook.com/FarhanIslamImon.official?mibextid=ZbWKwL",
-        attachment: fs.createReadStream(__dirname + `/cache/farhan1.mp4`)
+        attachment: fs.createReadStream(__dirname + `/cache/fap4`)
       };
 
       api.sendMessage(msg, threadID, messageID);

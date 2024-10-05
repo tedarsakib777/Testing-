@@ -18,19 +18,12 @@ module.exports.config = {
 };
 
 module.exports.languages = {
-  "vi": {
-    "moduleInfo": "「 %1 」\n%2\n\n❯ Cách sử dụng: %3\n❯ Thuộc nhóm: %4\n❯ Thời gian chờ: %5 giây(s)\n❯ Quyền hạn: %6\n\n» Module code by %7 «",
-    "helpList": '[ Hiện tại đang có %1 lệnh có thể sử dụng trên bot này, Sử dụng: "%2help nameCommand" để xem chi tiết cách sử dụng! ]"',
-    "user": "Người dùng",
-        "adminGroup": "Quản trị viên nhóm",
-        "adminBot": "Quản trị viên bot"
-  },
   "en": {
-    "moduleInfo": "「 %1 」\n%2\n\n❯ Usage: %3\n❯ Category: %4\n❯ Waiting time: %5 seconds(s)\n❯ Permission: %6\n\n» Module code by %7 «",
-    "helpList": '[ There are %1 commands on this bot, Use: "%2help nameCommand" to know how to use! ]',
-    "user": "Anyone",
-        "adminGroup": "Admin of group",
-        "adminBot": "Admin of bot"
+    "moduleInfo": "─────[ %1 ]──────\n\nUsage: %3\nCategory: %4\nWaiting time: %5 seconds(s)\nPermission: %6\nDescription: %2\n\nModule coded by %7",
+        "helpList": '[ There are %1 commands on this bot, Use: "%2help nameCommand" to know how to use! ]',
+        "user": "User",
+            "adminGroup": "Admin group",
+            "adminBot": "Admin bot"
   }
 };
 
@@ -89,8 +82,10 @@ let path = __dirname + `/cache/help.png`;
   fs.writeFileSync(path, Buffer.from(image, "utf-8"));*/
 
 
-    const text = `╰➤ 𝗧𝗢𝗧𝗔𝗟 𝗖𝗢𝗠𝗠𝗔𝗡𝗗 ${arrayInfo.length}\n𝗨𝗦𝗘【 ${prefix}Help 】𝐏𝐀𝐆𝐄 𝐍𝐎.\n╰➤ «𝐍𝐔𝐌𝐁𝐄𝐑 𝐎𝐅 𝐁𝐎𝐒𝐒» ${page}
-╰➤ https://www.facebook.com/NAYEM.KING.OKY`;
+    const text = `\n•─────✧─────•\n      「 𝗣𝗔𝗚𝗘 」   \n◃───────────▹\n\n       (${page}/${Math.ceil(arrayInfo.length/numberOfOnePage)})\n
+যেকোনো কমান্ড পেতে 👉 "${prefix} চিন্হ টি লিখুন তার পর {command name} \n\nবর্তমানে ${arrayInfo.length}  কমান্ড চালু আছে\n\n
+𝙱𝙾𝚃 𝙽À𝙼𝙴 :${global.config.BOTNAME} \n\n┏•━•━•━ ◎ ━•━•━•┓\n   𝗡𝗔𝗠𝗘 𝗢𝗪𝗡𝗘𝗥\n┗•━•━•━ ◎ ━•━•━•┛ \n\nBOT PREFIX: ${prefix}\n\n╭───────────────╮\n🔥    𝗦𝗔𝗞𝗜𝗕 𝗠𝗔𝗛𝗠𝗨𝗗   🔥\n╰───────────────╯\n\n[ANY HELP CONTACT FB]\n  https://www.facebook.com/T.R.S.SAKIB.01
+\n╭──────────╮\n✜     𝐌𝐈𝐍𝐃 𝐈𝐓     ✜\n╰──────────╯ \n𝗜𝗧'𝗦 𝗝𝗨𝗦𝗧 𝗡𝗢𝗧 𝗔 𝗡𝗔𝗠𝗘 𝗜𝗧'𝗦 𝗔 𝗕𝗥𝗔𝗡𝗗       《𝗧.𝗥.𝗦》`;
     return api.sendMessage(`╭──«~»──CMD──«~»──╮\n\nPAGE ${page}/${Math.ceil(arrayInfo.length/numberOfOnePage)}` + "\n" + msg + "\n" + text, threadID, async (error, info) => {
       if (autoUnsend) {
         await new Promise(resolve => setTimeout(resolve, delayUnsend * 100000));

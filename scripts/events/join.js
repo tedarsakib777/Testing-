@@ -54,23 +54,16 @@ let gifPath = __dirname + '/Nayan/join/farhan.jpg';
 axios.get(gifUrl, { responseType: 'arraybuffer' })
 .then(response => {
     fs.writeFileSync(gifPath, response.data);
-    return api.sendMessage("আমি নাঈম BOT চলে আইছি তোমাদের মাঝে🥵🤭!", event.threadID, () => api.sendMessage({ body: `${global.config.BOTNAME} CONNECTED«\n\nAssalamualaykum☘️
-<------------------------------>  
-BOT CONNECTED SUCCESFUL !!! 
-
-APPROVAL ALLOW IN THIS GROUP!!!
-<------------------------------>\n\nTO VIEW ANY COMMAND Use👉${global.config.PREFIX}help\nSee command👉 ${global.config.PREFIX}command
-\n\EXAMPLE:👇\n${global.config.PREFIX}admin (information)\n${global.config.PREFIX}islam (video)\n${global.config.PREFIX}tik (link)\n${global.config.PREFIX}fbvideo (link)
-<------------------------------>
-AND FOR ANY COMPLAINTS OR CONTACT BOT OPERATOR 
-
-DEVELOPER : NAYEM_BOSS 
-
-🟣Facebook Account Link: 
-
-https://www.facebook.com/NAYEM.KING.OKY
-
-🔵WHATSAPP NUMBER: INBOX`, attachment: fs.createReadStream(gifPath)}, threadID));
+    return api.sendMessage("আমি 𝗦𝗔𝗞𝗜𝗕 𝗠𝗔𝗛𝗠𝗨𝗗 চলে আইছি তোমাদের মাঝে🥵🤭!", event.threadID, () => api.sendMessage({ body: `${global.config.BOTNAME} CONNECTED«\n\nআসসালামুআলাইকুম 💖
+____________________________________
+🤖
+BOT CONNECTED!!! 
+adding in the group chat successfully!!!
+😈 কিরে বাঁদর গুলা শয়তানি করার জন্য অ্যাড দিছস 😈
+____________________________________\n\nযেকোনো কমান্ড দেখতে ${global.config.PREFIX}help ব্যবহার করুন
+\n\উদাহারণ:\n${global.config.PREFIX}mark (text)\n${global.config.PREFIX}lexi (text)\n${global.config.PREFIX}trump (text)\n${global.config.PREFIX}info
+____________________________________\n\u09af\u09c7\u0995\u09cb\u09a8\u09cb \u0985\u09ad\u09bf\u09af\u09cb\u0997 \u0985\u09a5\u09ac\u09be \u09b9\u09c7\u09b2\u09cd\u09aa \u098f\u09b0 \u099c\u09a8\u09cd\u09af \u0986\u09ae\u09be\u09b0 BOSS \n\ud835\udc12\ud835\udc00\ud835\udc0a\ud835\udc08\ud835\udc01 \u0995\u09c7 \u09a8\u0995 \u0995\u09b0\u09a4\u09c7 \u09aa\u09be\u09b0\u09c7\u09a8 \n\ud83d\udc49https://www.facebook.com/SAKIB.MAHMUD.V1 
+`, attachment: fs.createReadStream(gifPath)}, threadID));
 })
 .catch(error => {
     console.error(error);
@@ -159,7 +152,7 @@ https://www.facebook.com/NAYEM.KING.OKY
         abx.push(fs.createReadStream(__dirname + `/Nayan/join/${o}.png`))
       }
       memLength.sort((a, b) => a - b);
-      (typeof threadData.customJoin == "undefined") ? msg = `Hello {name}\nWelcome to {threadName}\nyou're the {soThanhVien}th member on this group please enjoy"\n─────────────────\n[ {time} - {thu} ]` : msg = threadData.customJoin;
+      (typeof threadData.customJoin == "undefined") ? msg = `╔════•|      ✿      |•════╗\n 💐আ্ঁস্ঁসা্ঁলা্ঁমু্ঁ💚আ্ঁলা্ঁই্ঁকু্ঁম্ঁ💐\n╚════•|      ✿      |•════╝\n\n    \u2728\ud83c\udd86\ud83c\udd74\ud83c\udd7b\ud83c\udd7b \ud83c\udd72\ud83c\udd7e\ud83c\udd7c\ud83c\udd74\u2728\n\n                 ❥𝐍𝐄𝐖~\n\n        ~\ud83c\uddf2\u200c\ud83c\uddea\u200c\ud83c\uddf2\u200c\ud83c\udde7\u200c\ud83c\uddea\u200c\ud83c\uddf7\u200c~\n\n             [   {name} ]\n\n༄✺আ্ঁপ্ঁনা্ঁকে্ঁ আ্ঁমা্ঁদে্ঁর্ঁ✺࿐\n\n{threadName}\n\n 🥰🖤🌸—এ্ঁর্ঁ প্ঁক্ষ্ঁ🍀থে্ঁকে্ঁ🍀—🌸🥀\n\n         🥀_ভা্ঁলো্ঁবা্ঁসা্ঁ_অ্ঁভি্ঁরা্ঁম্ঁ_🥀\n\n༄✺আঁপঁনিঁ এঁইঁ গ্রুঁপেঁর {soThanhVien} নঁং মে্ঁম্বা্ঁরঁ ࿐\n\n    \u2554\u2566\u2550\u2550\u2022    \u2022\u2720\u2022\u2740\u2022\u2720 \u2022   \u2022\u2550\u2550\u2566\u2557\n        \u2665  \ud835\udc01\ud835\udc0e\ud835\udc13\'\ud835\udc2c \ud835\udc0e\ud835\udc16\ud835\udc0d\ud835\udc04\ud835\udc11\u2665\n\n                           ☟                     \n\n\u2665\ud83d\udca5\u4e97\u3164\ud83c\udd82\ud83c\udd70\ud83c\udd7a\ud83c\udd78\ud83c\udd71\u3164\u4e97\ud83d\udca5\u2665\n    \u255a\u2569\u2550\u2550\u2022    \u2022\u2720\u2022\u2740\u2022\u2720 \u2022    \u2022\u2550\u2550\u2569\u255d"\n─────────────────\n[ {time} - {thu} ]` : msg = threadData.customJoin;
       var nameAuthor = await Users.getNameUser(event.author)
       msg = msg
         .replace(/\{iduser}/g, iduser.join(', '))

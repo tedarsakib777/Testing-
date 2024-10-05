@@ -1,5 +1,5 @@
 module.exports.config = {
-  name: "bot",
+  name: "বট",
   version: "1.0.0",
   permission: 0,
   credits: "ryuko",
@@ -21,7 +21,7 @@ module.exports.handleEvent = async function({ api, event, args, Threads, Users }
   var rand = tl[Math.floor(Math.random() * tl.length)]
 
 
-  if (event.body.indexOf("bot") == 0 || (event.body.indexOf("bot") == 0)) {
+  if (event.body.indexOf("বট") == 0 || (event.body.indexOf("বট") == 0)) {
     var msg = {
       body: `╭────────────❍\n╰➤ 👤 𝐃𝐞𝐚𝐫 『 ${name} 』,\n\n╰➤ 🗣️${rand}\n╰─────────────────➤`
     }

@@ -17,7 +17,11 @@ module.exports.handleEvent = async function({ api, event, args, Threads, Users }
   var id = event.senderID;
   var name = await Users.getNameUser(event.senderID);
 
-  var tl = [" I love you baby meye hole chipay aso👩‍❤️‍👨"];
+  var tl = ["╭───────────────❍
+╰➤ 👤\n𝐃𝐞𝐚𝐫 『 ${name} 』 \n
+\n🗣️ji bolen ki korte pari ami apnar jonno?
+\n
+╰───────────────➤"];
   var rand = tl[Math.floor(Math.random() * tl.length)]
 
     if ((event.body.toLowerCase() == "😘") || (event.body.toLowerCase() == "😽")) {

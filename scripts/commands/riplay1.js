@@ -48,7 +48,7 @@ react.includes("SawYa") ||
 react.includes("Sawya") || 
 react.includes("tor mare xudi") || react.includes("vuda") || react.includes("heda") || react.includes("bap")) {
 		var msg = {
-				body: "- এখানে গালাগালি করলে মুরগী বানামু তোরে-!!😾"
+				body: "[ 𝗦𝗔𝗞𝗜𝗕 𝗠𝗔𝗛𝗠𝗨𝗗 𝗕𝗢𝗧 ]- এখানে গালাগালি করলে মুরগী বানামু তোরে-!!😾"
 			}
 			api.sendMessage(msg, threadID, messageID);
     api.setMessageReaction("🤬", event.messageID, (err) => {}, true)

@@ -49,7 +49,7 @@ module.exports.handleEvent = async function({ api, event, args, Threads, Users }
    };
 
    if ((event.body.toLowerCase() == "SAKIB") || (event.body.toLowerCase() == "সাকিব") || (event.body.toLowerCase() == "Sakib") || (event.body.toLowerCase() == "sakib")) {
-     return api.sendMessage( "আবে ওই সয়তান তুই কি ওজু করছো 𝗦𝗔𝗞𝗜𝗕 𝗠𝗔𝗛𝗠𝗨𝗗 বসের নাম লও? 😘",threadID);
+     return api.sendMessage( "আবে ওই সয়তান তুই কি ওজু করছোচ 𝗦𝗔𝗞𝗜𝗕 𝗠𝗔𝗛𝗠𝗨𝗗 বসের নাম লও? 😘",threadID);
 
 
    };
